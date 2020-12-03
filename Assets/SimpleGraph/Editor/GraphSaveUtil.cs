@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class GraphSaveUtil
 {
-    private static readonly string SAVE_FOLDER_PATH = "Assets/TestGraph/SavedGraphData/";
+    private static readonly string SAVE_FOLDER_PATH = "Assets/";
 
     public static bool TrySaveGraphData(in string fileName, List<Node> graphNodes, List<Edge> graphLinks)
     {

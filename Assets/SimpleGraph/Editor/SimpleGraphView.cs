@@ -48,7 +48,7 @@ public class SimpleGraphView : GraphView
 
         GridBackground gridBackground = new GridBackground();
         gridBackground.StretchToParentSize();
-        this.styleSheets.Add(Resources.Load<StyleSheet>("TestGraphView"));
+        this.styleSheets.Add(Resources.Load<StyleSheet>("SimpleGraphView"));
         Insert(0, gridBackground);
 
         // should load data correctly
@@ -73,7 +73,8 @@ public class SimpleGraphView : GraphView
 
             Port inputPort = inputNode.m_inputPorts[nodeLinkDatas[i].InputPortIndex];
             Port outputPort = outputNode.m_outputPorts[nodeLinkDatas[i].OutputPortIndex];
-            inputPort.ConnectTo(outputPort);
+            Edge edge = inputPort.ConnectTo(outputPort);
+            AddElement(edge);
         }
     }
 
