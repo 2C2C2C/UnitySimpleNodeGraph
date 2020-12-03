@@ -55,13 +55,12 @@ public class SimpleGraphView : GraphView
         Dictionary<System.Guid, TestNode> tempNodes = new Dictionary<System.Guid, TestNode>();
         for (int i = 0; i < nodeDatas.Length; i++)
         {
-            TestNode node = CreateNode((NodeType)nodeDatas[i].NodeType);
-            // 
+            System.Guid nodeGuid = default;
+            if (!System.Guid.TryParse(nodeDatas[i].NodeGuidString, out nodeGuid))
+                nodeGuid = System.Guid.NewGuid();
+
+            TestNode node = CreateNode((NodeType)nodeDatas[i].NodeType, nodeGuid);
             node.SetPosition(new Rect(nodeDatas[i].NodePosition.x, nodeDatas[i].NodePosition.y, node.contentRect.width, node.contentRect.height));
-            System.Guid nodeGuid = System.Guid.Parse(nodeDatas[i].NodeGuidString);
-            node.m_nodeGuid = nodeGuid;
-            node.m_guidShortStr = nodeDatas[i].NodeGuidString.Substring(0, 5);
-            node.title = $"normal node - {node.m_guidShortStr}";
             tempNodes.Add(nodeGuid, node);
         }
 
@@ -70,7 +69,6 @@ public class SimpleGraphView : GraphView
         {
             TestNode inputNode = tempNodes[System.Guid.Parse(nodeLinkDatas[i].InputNodeGuidString)];
             TestNode outputNode = tempNodes[System.Guid.Parse(nodeLinkDatas[i].OutputNodeGuidString)];
-
             Port inputPort = inputNode.m_inputPorts[nodeLinkDatas[i].InputPortIndex];
             Port outputPort = outputNode.m_outputPorts[nodeLinkDatas[i].OutputPortIndex];
             Edge edge = inputPort.ConnectTo(outputPort);
