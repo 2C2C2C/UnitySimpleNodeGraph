@@ -1,0 +1,14 @@
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+Temp/
+.vs/
+.vscode/
+obj/
+*.csproj
+*.sln
+ProjectSettings/ProjectVersion.txt
+/Assets/MuyRefs
