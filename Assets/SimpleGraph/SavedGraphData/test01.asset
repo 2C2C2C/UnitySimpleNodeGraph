@@ -12,59 +12,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89e71d4a3b1696b42972c6087a011946, type: 3}
   m_Name: test01
   m_EditorClassIdentifier: 
-  m_nodeDataList:
-  - NodeGuidString: 781bcf3c-6775-4706-8045-6996571a2bab
-    NodeDataString: test text
-    NodePosition: {x: 40, y: 220}
-    NodeType: 0
-  - NodeGuidString: d6356e1e-d480-46fe-9121-8ba28b774f99
-    NodeDataString: d6356
-    NodePosition: {x: 107, y: 385}
-    NodeType: 1
-  - NodeGuidString: 61f44acd-928e-43d9-b2d9-e4c23705e27c
-    NodeDataString: 61f44
-    NodePosition: {x: 255, y: 193}
-    NodeType: 2
-  - NodeGuidString: 0f31726d-c10a-474e-bc1d-b3b8604071c1
-    NodeDataString: 0f317
-    NodePosition: {x: 488, y: 161}
-    NodeType: 1
-  - NodeGuidString: 965c39ad-af65-4286-bf7d-7eb257ac7cf6
-    NodeDataString: 965c3
-    NodePosition: {x: 433, y: 460}
-    NodeType: 1
-  - NodeGuidString: dfbf1b68-1d9e-4995-9756-870e75c0f368
-    NodeDataString: dfbf1
-    NodePosition: {x: 656, y: 276}
-    NodeType: 2
-  m_nodeLinkList:
-  - InputNodeGuidString: d6356e1e-d480-46fe-9121-8ba28b774f99
-    InputPortName: 
-    InputPortIndex: 0
-    OutputNodeGuidString: 781bcf3c-6775-4706-8045-6996571a2bab
-    OutputPortName: 
-    OutputPortIndex: 0
-  - InputNodeGuidString: 61f44acd-928e-43d9-b2d9-e4c23705e27c
-    InputPortName: 
-    InputPortIndex: 0
-    OutputNodeGuidString: d6356e1e-d480-46fe-9121-8ba28b774f99
-    OutputPortName: 
-    OutputPortIndex: 0
-  - InputNodeGuidString: 0f31726d-c10a-474e-bc1d-b3b8604071c1
-    InputPortName: 
-    InputPortIndex: 0
-    OutputNodeGuidString: 61f44acd-928e-43d9-b2d9-e4c23705e27c
-    OutputPortName: 
-    OutputPortIndex: 0
-  - InputNodeGuidString: 965c39ad-af65-4286-bf7d-7eb257ac7cf6
-    InputPortName: 
-    InputPortIndex: 0
-    OutputNodeGuidString: 61f44acd-928e-43d9-b2d9-e4c23705e27c
-    OutputPortName: 
-    OutputPortIndex: 1
-  - InputNodeGuidString: dfbf1b68-1d9e-4995-9756-870e75c0f368
-    InputPortName: 
-    InputPortIndex: 0
-    OutputNodeGuidString: 965c39ad-af65-4286-bf7d-7eb257ac7cf6
-    OutputPortName: 
-    OutputPortIndex: 0
+  GraphData:
+    NodeDatas:
+    - NodeGuidString: 1ea4b05f-5f6c-46b0-b6e5-d9461176edde
+      NodeDataString: 1ea4b
+      NodePosition: {x: 358, y: 569}
+      NodeType: 1
+    - NodeGuidString: befa6058-0fd7-4ff0-bf1f-79fd56b257e8
+      NodeDataString: befa6
+      NodePosition: {x: 290, y: 417}
+      NodeType: 0
+    - NodeGuidString: 70008c95-9c70-4c93-a527-bccad7a469f4
+      NodeDataString: 70008
+      NodePosition: {x: 593, y: 346}
+      NodeType: 2
+    - NodeGuidString: 4d72ea6f-ea0b-4146-9d7e-959c14da0caf
+      NodeDataString: 4d72e
+      NodePosition: {x: 828, y: 331}
+      NodeType: 1
+    - NodeGuidString: f80e3943-2cf7-4d2d-9b03-26208f4c6f12
+      NodeDataString: f80e3
+      NodePosition: {x: 836, y: 498}
+      NodeType: 2
+    - NodeGuidString: bdd4a819-c392-447d-8af4-8eb408d40d22
+      NodeDataString: bdd4a
+      NodePosition: {x: 1122, y: 581}
+      NodeType: 1
+    - NodeGuidString: ed772625-3a33-407a-873f-f50a78d0ab09
+      NodeDataString: ed772
+      NodePosition: {x: 1323, y: 434}
+      NodeType: 1
+    NodeLinks:
+    - InputNodeGuidString: 1ea4b05f-5f6c-46b0-b6e5-d9461176edde
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: befa6058-0fd7-4ff0-bf1f-79fd56b257e8
+      OutputPortName: 
+      OutputPortIndex: 0
+    - InputNodeGuidString: 70008c95-9c70-4c93-a527-bccad7a469f4
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: 1ea4b05f-5f6c-46b0-b6e5-d9461176edde
+      OutputPortName: 
+      OutputPortIndex: 0
+    - InputNodeGuidString: 4d72ea6f-ea0b-4146-9d7e-959c14da0caf
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: 70008c95-9c70-4c93-a527-bccad7a469f4
+      OutputPortName: 
+      OutputPortIndex: 0
+    - InputNodeGuidString: f80e3943-2cf7-4d2d-9b03-26208f4c6f12
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: 70008c95-9c70-4c93-a527-bccad7a469f4
+      OutputPortName: 
+      OutputPortIndex: 1
+    - InputNodeGuidString: ed772625-3a33-407a-873f-f50a78d0ab09
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: 4d72ea6f-ea0b-4146-9d7e-959c14da0caf
+      OutputPortName: 
+      OutputPortIndex: 0
+    - InputNodeGuidString: ed772625-3a33-407a-873f-f50a78d0ab09
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: f80e3943-2cf7-4d2d-9b03-26208f4c6f12
+      OutputPortName: 
+      OutputPortIndex: 0
+    - InputNodeGuidString: bdd4a819-c392-447d-8af4-8eb408d40d22
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: f80e3943-2cf7-4d2d-9b03-26208f4c6f12
+      OutputPortName: 
+      OutputPortIndex: 1
+    - InputNodeGuidString: ed772625-3a33-407a-873f-f50a78d0ab09
+      InputPortName: 
+      InputPortIndex: 0
+      OutputNodeGuidString: bdd4a819-c392-447d-8af4-8eb408d40d22
+      OutputPortName: 
+      OutputPortIndex: 0

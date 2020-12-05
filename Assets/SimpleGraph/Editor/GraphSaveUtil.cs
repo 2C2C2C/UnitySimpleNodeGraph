@@ -11,37 +11,35 @@ public static class GraphSaveUtil
 
     public static bool TrySaveGraphData(in string fileName, List<Node> graphNodes, List<Edge> graphLinks)
     {
-        bool result = false;
-
         List<NodeData> nodeDatas = new List<NodeData>();
         NodeData nodeData = null;
-        TestNode testNode = null;
+        SimpleNode testNode = null;
         for (int i = 0; i < graphNodes.Count; i++)
         {
             nodeData = new NodeData();
-            testNode = graphNodes[i] as TestNode;
+            testNode = graphNodes[i] as SimpleNode;
             nodeData.NodeGuidString = testNode.m_nodeGuid.ToString();
             nodeData.NodeDataString = testNode.m_guidShortStr;
             nodeData.NodePosition = testNode.GetPosition().position;
-            nodeData.NodeType = (int)testNode.m_nodeType;
+            nodeData.NodeType = (int)testNode.NodeType;
 
             nodeDatas.Add(nodeData);
         }
 
         List<NodeLinkData> nodeLinkDatas = new List<NodeLinkData>();
         NodeLinkData linkData = null;
-        TestNode inputNode = null;
-        TestNode outputNode = null;
+        SimpleNode inputNode = null;
+        SimpleNode outputNode = null;
         for (int i = 0; i < graphLinks.Count; i++)
         {
             linkData = new NodeLinkData();
-            inputNode = graphLinks[i].input.node as TestNode;
+            inputNode = graphLinks[i].input.node as SimpleNode;
             linkData.InputPortName = graphLinks[i].input.name;
             linkData.InputNodeGuidString = inputNode.m_nodeGuid.ToString();
             int inputNodeIndex = inputNode.m_inputPorts.FindIndex(port => port == graphLinks[i].input);
             linkData.InputPortIndex = inputNodeIndex;
 
-            outputNode = graphLinks[i].output.node as TestNode;
+            outputNode = graphLinks[i].output.node as SimpleNode;
             linkData.OutputNodeGuidString = outputNode.m_nodeGuid.ToString();
             linkData.OutputPortName = graphLinks[i].output.name;
             int outputNodeIndex = outputNode.m_outputPorts.FindIndex(port => port == graphLinks[i].output);
@@ -51,13 +49,21 @@ public static class GraphSaveUtil
         }
 
         GraphDataContainer container = new GraphDataContainer();
-        container.m_nodeDataList = nodeDatas.ToArray();
-        container.m_nodeLinkList = nodeLinkDatas.ToArray();
+        GraphData graphData = new GraphData();
+        graphData.NodeDatas = nodeDatas.ToArray();
+        graphData.NodeLinks = nodeLinkDatas.ToArray();
+        container.GraphData = graphData;
 
-        string path = $"{SAVE_FOLDER_PATH}{fileName}.asset";
-        AssetDatabase.CreateAsset(container, path);
+        string path = EditorUtility.SaveFilePanel("title", SAVE_FOLDER_PATH, fileName, "asset");
+        int cutIndex = path.IndexOf("Assets/");
+        string assetsPath = path.Substring(cutIndex);
+        if (!string.IsNullOrEmpty(path))
+        {
+            AssetDatabase.CreateAsset(container, assetsPath);
+            return true;
+        }
 
-        return result;
+        return false;
     }
 
     public static bool TryLoadGraphData(out NodeData[] outNodeData, out NodeLinkData[] outLinkData)
@@ -66,7 +72,6 @@ public static class GraphSaveUtil
         outLinkData = null;
 
         string path = EditorUtility.OpenFilePanel("title", SAVE_FOLDER_PATH, "asset");
-        // AssetDatabase.va
         if (string.IsNullOrEmpty(path) || !File.Exists(path))
         {
             Debug.Log($"path empty");
@@ -75,17 +80,16 @@ public static class GraphSaveUtil
 
         // Debug.Log($"select graph data {path}");
         int cutIndex = path.IndexOf("Assets/");
-        path = path.Substring(cutIndex);
-        GraphDataContainer data = AssetDatabase.LoadAssetAtPath<GraphDataContainer>(path);
-
-        if (data == null)
+        string assetsPath = path.Substring(cutIndex);
+        GraphDataContainer dataContainer = AssetDatabase.LoadAssetAtPath<GraphDataContainer>(assetsPath);
+        if (dataContainer == null)
         {
-            // Debug.Log($"load data fail");
+            Debug.Log($"load data fail");
             return false;
         }
 
-        NodeData[] nodeDatas = data.m_nodeDataList;
-        NodeLinkData[] nodeLInks = data.m_nodeLinkList;
+        NodeData[] nodeDatas = dataContainer.GraphData.NodeDatas;
+        NodeLinkData[] nodeLInks = dataContainer.GraphData.NodeLinks;
         outNodeData = new NodeData[nodeDatas.Length];
         outLinkData = new NodeLinkData[nodeLInks.Length];
         System.Array.Copy(nodeDatas, outNodeData, outNodeData.Length);

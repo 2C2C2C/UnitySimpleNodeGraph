@@ -1,42 +1,37 @@
 ﻿using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 
-public enum NodeType
+/*
+for nodes, we care about the type and ports connection for now
+*/
+
+public enum SimpleNodeType
 {
     StartNode = 0, // 0 in 1 out
     NormalNode = 1, // 1 in 1 out
-    IfNode = 2,// 1 in 2 out or....
+    BranchNode = 2,// 1 in 2 out or....
 }
 
-public class TestNode : Node
+public class SimpleNode : Node
 {
     public System.Guid m_nodeGuid = System.Guid.Empty;
     public string m_guidShortStr = string.Empty;
-    public bool m_isEntryNode = false;
 
     public List<Port> m_inputPorts = null;
     public List<Port> m_outputPorts = null;
-    public NodeType m_nodeType = default;
+    private SimpleNodeType m_nodeType = default;
 
-    public TestNode()
-    {
-        m_nodeGuid = System.Guid.NewGuid();
-        m_guidShortStr = m_nodeGuid.ToString().Substring(0, 5);
-        this.title = m_guidShortStr;
-        m_isEntryNode = false;
+    public SimpleNodeType NodeType => m_nodeType;
 
-        m_inputPorts = new List<Port>();
-        m_outputPorts = new List<Port>();
-    }
-
-    public TestNode(System.Guid guid)
+    public SimpleNode(System.Guid guid, SimpleNodeType nodeType)
     {
         m_nodeGuid = guid;
         m_guidShortStr = m_nodeGuid.ToString().Substring(0, 5);
-        this.title = m_guidShortStr;
-        m_isEntryNode = false;
+        m_nodeType = nodeType;
 
         m_inputPorts = new List<Port>();
         m_outputPorts = new List<Port>();
+
+        this.title = m_guidShortStr;
     }
 }

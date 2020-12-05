@@ -5,6 +5,5 @@ using UnityEngine;
 [System.Serializable]
 public class GraphDataContainer : ScriptableObject
 {
-    public NodeData[] m_nodeDataList = null;
-    public NodeLinkData[] m_nodeLinkList = null;
+    public GraphData GraphData = null;
 }
