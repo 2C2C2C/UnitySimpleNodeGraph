@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -6,6 +7,35 @@ using UnityEngine.UIElements;
 public class SimpleGraphView : GraphView
 {
     private readonly Vector2 NODE_SIZE = new Vector2(200.0f, 200.0f);
+
+    private bool m_UseInternalClipboard = false;
+    private string m_clipboard = string.Empty;
+    internal string ClipboardStr
+    {
+        get
+        {
+            if (m_UseInternalClipboard)
+            {
+                return m_clipboard;
+            }
+            else
+            {
+                return EditorGUIUtility.systemCopyBuffer;
+            }
+        }
+
+        set
+        {
+            if (m_UseInternalClipboard)
+            {
+                m_clipboard = value;
+            }
+            else
+            {
+                EditorGUIUtility.systemCopyBuffer = value;
+            }
+        }
+    }
 
     public SimpleGraphView()
     {
@@ -19,6 +49,8 @@ public class SimpleGraphView : GraphView
         this.styleSheets.Add(Resources.Load<StyleSheet>("SimpleGraphView"));
         Insert(0, gridBackground);
 
+        RegisterCallback<ValidateCommandEvent>(OnValidateCommandTemp);
+        RegisterCallback<ExecuteCommandEvent>(OnExecuteCommandTemp);
         // do we need to un-register those call back if we want to use our own callback, some of them may cause problem 
         // RegisterCallback<ValidateCommandEvent>(OnValidateCommand);
         // RegisterCallback<ExecuteCommandEvent>(OnExecuteCommand);
@@ -150,5 +182,93 @@ public class SimpleGraphView : GraphView
         }
         return compatiblePorts;
     }
+
+    #region event callback
+
+    // check https://github.com/Unity-Technologies/UnityCsReference/blob/2019.4/Modules/GraphViewEditor/Views/GraphView.cs#L913
+    private void OnValidateCommandTemp(ValidateCommandEvent evt)
+    {
+        if (panel.GetCapturingElement(PointerId.mousePointerId) != null)
+            return;
+
+        if ((evt.commandName == GraphUtil.EventCommandNames.Copy && canCopySelection)
+            || (evt.commandName == GraphUtil.EventCommandNames.Paste && canPaste)
+            // || (evt.commandName == GraphUtil.EventCommandNames.Duplicate && canDuplicateSelection)
+            || (evt.commandName == GraphUtil.EventCommandNames.Duplicate)
+            || (evt.commandName == GraphUtil.EventCommandNames.UndoRedoPerformed)
+            || (evt.commandName == GraphUtil.EventCommandNames.Cut && canCutSelection)
+            || ((evt.commandName == GraphUtil.EventCommandNames.Delete || evt.commandName == GraphUtil.EventCommandNames.SoftDelete) && canDeleteSelection))
+        {
+            evt.StopPropagation();
+            if (evt.imguiEvent != null)
+            {
+                evt.imguiEvent.Use();
+            }
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.FrameSelected)
+        {
+            evt.StopPropagation();
+            if (evt.imguiEvent != null)
+            {
+                evt.imguiEvent.Use();
+            }
+        }
+
+    }
+
+    // check https://github.com/Unity-Technologies/UnityCsReference/blob/2019.4/Modules/GraphViewEditor/Views/GraphView.cs#L946
+    private void OnExecuteCommandTemp(ExecuteCommandEvent evt)
+    {
+        if (panel.GetCapturingElement(PointerId.mousePointerId) != null)
+            return;
+
+        if (evt.commandName == GraphUtil.EventCommandNames.Copy)
+        {
+            CopySelectionCallback();
+            evt.StopPropagation();
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.Paste)
+        {
+            PasteCallback();
+            evt.StopPropagation();
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.Duplicate)
+        {
+            // DuplicateSelectionCallback();
+            Debug.Log("wanna duplicate");
+            evt.StopPropagation();
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.Cut)
+        {
+            CutSelectionCallback();
+            evt.StopPropagation();
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.Delete)
+        {
+            DeleteSelectionCallback(AskUser.DontAskUser);
+            evt.StopPropagation();
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.SoftDelete)
+        {
+            DeleteSelectionCallback(AskUser.AskUser);
+            evt.StopPropagation();
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.FrameSelected)
+        {
+            FrameSelection();
+            evt.StopPropagation();
+        }
+        else if (evt.commandName == GraphUtil.EventCommandNames.UndoRedoPerformed)
+        {
+            evt.StopPropagation();
+        }
+
+        if (evt.isPropagationStopped && evt.imguiEvent != null)
+        {
+            evt.imguiEvent.Use();
+        }
+    }
+
+    #endregion
 
 }
